@@ -1,0 +1,907 @@
+# Default values for luna-multiplayer.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+storage:
+  universe:
+    request: 1Gi
+    className: ""
+    pvcLabels: {}
+  plugins:
+    request: 1Gi
+    className: ""
+    pvcLabels: {}
+
+gameService:
+  type: ClusterIP
+  port: 8800
+
+webService:
+  type: ClusterIP
+  port: 8900
+  ingress:
+    hostname: luna-multiplayer.local
+    annotations: {}
+    tls: []
+
+config:
+  ConnectionSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+      <ConnectionSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--The address the server listens on, needs to be either [::] or 0.0.0.0. If set to the unspecified IPv6 address [::], the server listens for both IPv6 and IPv4-->
+      <ListenAddress>::</ListenAddress>
+      <!--The UDP port the server listens on. You don't need to open it on your router if RegisterWithMasterServer = true. If you want that players can connect against your server MANUALLY you will need to open it on your router-->
+      <Port>8800</Port>
+      <!--Heartbeat interval in ms. MUST be lower than the ConnectionMsTimeout value.-->
+      <HearbeatMsInterval>1000</HearbeatMsInterval>
+      <!--Connection timeout in ms. If no heartbeats are received after this interval, the client is disconnected.-->
+      <ConnectionMsTimeout>30000</ConnectionMsTimeout>
+      <!--Tries to use UPnP to open the ports in your router-->
+      <Upnp>true</Upnp>
+      <!--UPnP timeout in ms for trying to open the ports-->
+      <UpnpMsTimeout>5000</UpnpMsTimeout>
+      <!--Maximum transmission unit (MTU) size in bytes. Min value is 1. Default value is 1408. Max value is 8192.-->
+      <MaximumTransmissionUnit>1408</MaximumTransmissionUnit>
+      <!--Try to expand MTU size-->
+      <AutoExpandMtu>false</AutoExpandMtu>
+    </ConnectionSettingsDefinition>
+  CraftSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <CraftSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Minimum interval between uploading/requesting crafts in milliseconds-->
+      <MinCraftLibraryRequestIntervalMs>5000</MinCraftLibraryRequestIntervalMs>
+      <!--Maximum crafts kept per user per type (VAB,SPH and Subassembly)-->
+      <MaxCraftsPerUser>10</MaxCraftsPerUser>
+      <!--Maximum crafts folders kept-->
+      <MaxCraftFolders>50</MaxCraftFolders>
+    </CraftSettingsDefinition>
+  DebugSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <DebugSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--A percentage value to simulate the probability of a packet loss. From 0.0% to 100.0%-->
+      <SimulatedLossChance>0</SimulatedLossChance>
+      <!--A percentage value to simulate the probability of a packet duplication. From 0.0% to 100.0%-->
+      <SimulatedDuplicatesChance>0</SimulatedDuplicatesChance>
+      <!--Max random latency that a packet may have-->
+      <MaxSimulatedRandomLatencyMs>0</MaxSimulatedRandomLatencyMs>
+      <!--Minimum latency that a packet will have-->
+      <MinSimulatedLatencyMs>0</MinSimulatedLatencyMs>
+      <!--Custom master server to register with for debugging purposes-->
+      <CustomMasterServer></CustomMasterServer>
+    </DebugSettingsDefinition>
+  DedicatedServerSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <DedicatedServerSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Use rainbow effect for the server in the server browser-->
+      <UseRainbowEffect>true</UseRainbowEffect>
+      <!--If UseRainbowEffect is false use RedGreenBlue fields to specify server color (Valid values are from 0 to 255)-->
+      <Red>255</Red>
+      <!--If UseRainbowEffect is false use RedGreenBlue fields to specify server color (Valid values are from 0 to 255)-->
+      <Green>0</Green>
+      <!--If UseRainbowEffect is false use RedGreenBlue fields to specify server color (Valid values are from 0 to 255)-->
+      <Blue>0</Blue>
+    </DedicatedServerSettingsDefinition
+  GameplaySettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <GameplaySettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Allow Reverting-->
+      <CanRevert>true</CanRevert>
+      <!--Missing Crews Respawn-->
+      <MissingCrewsRespawn>true</MissingCrewsRespawn>
+      <!--Crew Respawn Time-->
+      <RespawnTime>2</RespawnTime>
+      <!--Auto-Hire Crewmembers before Flight-->
+      <AutoHireCrews>false</AutoHireCrews>
+      <!--No Entry Purchase Required on Research-->
+      <BypassEntryPurchaseAfterResearch>true</BypassEntryPurchaseAfterResearch>
+      <!--Indestructible Facilities-->
+      <IndestructibleFacilities>false</IndestructibleFacilities>
+      <!--Allow Stock Vessels-->
+      <AllowStockVessels>false</AllowStockVessels>
+      <!--Allow Other launch sites (for users that have the Making History DLC)-->
+      <AllowOtherLaunchSites>true</AllowOtherLaunchSites>
+      <!--Re-Entry Heating-->
+      <ReentryHeatScale>1</ReentryHeatScale>
+      <!--Resource Abundance-->
+      <ResourceAbundance>1</ResourceAbundance>
+      <!--Enable Comm Network-->
+      <CommNetwork>true</CommNetwork>
+      <!--Starting Funds-->
+      <StartingFunds>25000</StartingFunds>
+      <!--Starting Science-->
+      <StartingScience>0</StartingScience>
+      <!--Starting Reputation-->
+      <StartingReputation>0</StartingReputation>
+      <!--Science Rewards-->
+      <ScienceGainMultiplier>1</ScienceGainMultiplier>
+      <!--Funds Rewards-->
+      <FundsGainMultiplier>1</FundsGainMultiplier>
+      <!--Reputation Rewards-->
+      <RepGainMultiplier>1</RepGainMultiplier>
+      <!--Funds Penalties-->
+      <FundsLossMultiplier>1</FundsLossMultiplier>
+      <!--Reputation Penalties-->
+      <RepLossMultiplier>1</RepLossMultiplier>
+      <!--Decline Penalty-->
+      <RepLossDeclined>1</RepLossDeclined>
+      <!--Enable Kerbal Experience-->
+      <KerbalExp>true</KerbalExp>
+      <!--Kerbals Level Up Immediately-->
+      <ImmediateLevelUp>false</ImmediateLevelUp>
+      <!--Allow Negative Funds/Science-->
+      <AllowNegativeCurrency>false</AllowNegativeCurrency>
+      <!--Enable parts pressure limits-->
+      <PressurePartLimits>false</PressurePartLimits>
+      <!--Enable parts G limits-->
+      <GPartLimits>false</GPartLimits>
+      <!--Enable Kerbal G limits-->
+      <GKerbalLimits>false</GKerbalLimits>
+      <!--Kerbal G tolerance multiplier-->
+      <KerbalGToleranceMult>1</KerbalGToleranceMult>
+      <!--Resource Transfer Obeys Crossfeed Rules-->
+      <ObeyCrossfeedRules>false</ObeyCrossfeedRules>
+      <!--Always allow action groups-->
+      <ActionGroupsAlways>false</ActionGroupsAlways>
+      <!--Building Impact Damage Multiplier-->
+      <BuildingDamageMultiplier>0.05</BuildingDamageMultiplier>
+      <!--Part Upgrades-->
+      <PartUpgrades>true</PartUpgrades>
+      <!--Require Signal for Control-->
+      <RequireSignalForControl>false</RequireSignalForControl>
+      <!--Plasma blackout-->
+      <ReentryBlackout>false</ReentryBlackout>
+      <!--Range Modifier-->
+      <RangeModifier>1</RangeModifier>
+      <!--DSN Modifier-->
+      <DsnModifier>1</DsnModifier>
+      <!--Occlusion Modifier, Vac-->
+      <OcclusionModifierVac>0.9</OcclusionModifierVac>
+      <!--Occlusion Modifier, Atm-->
+      <OcclusionModifierAtm>0.75</OcclusionModifierAtm>
+      <!--Enable Extra Groundstations-->
+      <ExtraGroundstations>true</ExtraGroundstations>
+      <!--Enable full SAS in Sandbox-->
+      <EnableFullSASInSandbox>false</EnableFullSASInSandbox>
+    </GameplaySettingsDefinition
+  GeneralSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <GeneralSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Name of the server. Max 30 char-->
+      <ServerName>Luna Server</ServerName>
+      <!--Description of the server. Max 200 char-->
+      <Description>Luna Server Description</Description>
+      <!--By default this will be given by the masterserver but you can override it here if you want. Max 2 char-->
+      <CountryCode></CountryCode>
+      <!--Website text to display (discord, website, forum, etc). Can be left empty. Max 15 char-->
+      <WebsiteText>LMP</WebsiteText>
+      <!--Actual website URL. Can be left empty. Max 60 char-->
+      <Website>lunamultiplayer.com</Website>
+      <!--Password for the server. Leave it empty if you want to make a public server. Max 30 chars-->
+      <Password></Password>
+      <!--Admin password for the server. Leave it empty if you don't want to allow server administration from KSP. Max 30 chars-->
+      <AdminPassword></AdminPassword>
+      <!--Specify the server's MOTD (message of the day). 255 chars max-->
+      <ServerMotd>Hi %Name%!
+      Welcome to %ServerName%.
+      Online players: %PlayerCount%</ServerMotd>
+      <!--Writes the server's MOTD (message of the day) in the chat of the user who joins-->
+      <PrintMotdInChat>false</PrintMotdInChat>
+      <!--Maximum amount of players that can join the server.-->
+      <MaxPlayers>20</MaxPlayers>
+      <!--Maximum length of a username.-->
+      <MaxUsernameLength>15</MaxUsernameLength>
+      <!--Specify in minutes how often /dekessler automatically runs. 0 = Disabled-->
+      <AutoDekessler>0.5</AutoDekessler>
+      <!--Specify in minutes how often /nukeksc automatically runs. 0 = Disabled-->
+      <AutoNuke>0</AutoNuke>
+      <!--Enable use of Cheats in-game.-->
+      <Cheats>true</Cheats>
+      <!--Allow players to sack kerbals-->
+      <AllowSackKerbals>false</AllowSackKerbals>
+      <!--Specify the Name that will appear when you send a message using the server's console.-->
+      <ConsoleIdentifier>Server</ConsoleIdentifier>
+      <!--Specify the gameplay difficulty of the server. Values: Easy, Normal, Moderate, Hard, Custom-->
+      <GameDifficulty>Normal</GameDifficulty>
+      <!--Specify the game Type. Values: Sandbox, Career, Science-->
+      <GameMode>Sandbox</GameMode>
+      <!--Enable mod control. WARNING:
+        Only consider turning off mod control for private servers. The game will constantly complain about missing parts if there are missing mods. Read this wiki page: https://github.com/LunaMultiplayer/LunaMultiplayer/wiki/Mod-file to understand how it works-->
+      <ModControl>true</ModControl>
+      <!--How many untracked asteroids to spawn into the universe. 0 = Disabled-->
+      <NumberOfAsteroids>5</NumberOfAsteroids>
+      <!--How many untracked comets to spawn into the universe. 0 = Disabled-->
+      <NumberOfComets>5</NumberOfComets>
+      <!--Terrain quality. All clients will need to have this setting in their KSP to avoid terrain differences. Values: Low, Default, High, Ignore. Using 'Ignore' might create bugs-->
+      <TerrainQuality>High</TerrainQuality>
+      <!--Specify the minimum distance in which vessels can interact with eachother at the launch pad and runway-->
+      <SafetyBubbleDistance>100</SafetyBubbleDistance>
+      <!--Max number of parts that a vessel can have when spawning-->
+      <MaxVesselParts>200</MaxVesselParts>
+    </GeneralSettingsDefinition>
+  IntervalSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <IntervalSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Interval in ms at which the client will send POSITION and FLIGHTSTATE updates of their vessel when other players are NEARBY. Decrease it if your clients have good network connection and you plan to do dogfights, although in that case consider using interpolation aswell-->
+      <VesselUpdatesMsInterval>50</VesselUpdatesMsInterval>
+      <!--Interval in ms at which the client will send POSITION and FLIGHTSTATE updates for vessels that are uncontrolled and nearby them. This interval is also applied used to send position updates of HIS OWN vessel when NOBODY is around-->
+      <SecondaryVesselUpdatesMsInterval>150</SecondaryVesselUpdatesMsInterval>
+      <!--Send/Receive tick clock. Keep this value low but at least above 2ms to avoid extreme CPU usage.-->
+      <SendReceiveThreadTickMs>5</SendReceiveThreadTickMs>
+      <!--Main thread polling in ms. Keep this value low but at least above 2ms to avoid extreme CPU usage.-->
+      <MainTimeTick>5</MainTimeTick>
+      <!--Interval in ms at which internal LMP structures (Subspaces, Vessels, Scenario files, ...) will be backed up to a file-->
+      <BackupIntervalMs>30000</BackupIntervalMs>
+      <!--Interval to force a garbage collection and reduce the memory usage. Specify this value in minutes. 0 = deactivated.-->
+      <GcMinutesInterval>15</GcMinutesInterval>
+    </IntervalSettingsDefinition>
+  LMPModControl.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <ModControlStructure xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <RequiredExpansions></RequiredExpansions>
+      <AllowNonListedPlugins>true</AllowNonListedPlugins>
+      <MandatoryPlugins></MandatoryPlugins>
+      <OptionalPlugins></OptionalPlugins>
+      <ForbiddenPlugins></ForbiddenPlugins>
+      <MandatoryParts></MandatoryParts>
+      <AllowedParts>
+        <string>StandardCtrlSrf</string>
+        <string>CanardController</string>
+        <string>noseCone</string>
+        <string>AdvancedCanard</string>
+        <string>airplaneTail</string>
+        <string>deltaWing</string>
+        <string>noseConeAdapter</string>
+        <string>rocketNoseCone</string>
+        <string>smallCtrlSrf</string>
+        <string>standardNoseCone</string>
+        <string>sweptWing</string>
+        <string>tailfin</string>
+        <string>wingConnector</string>
+        <string>winglet</string>
+        <string>R8winglet</string>
+        <string>winglet3</string>
+        <string>Mark1Cockpit</string>
+        <string>Mark2Cockpit</string>
+        <string>Mark1-2Pod</string>
+        <string>advSasModule</string>
+        <string>asasmodule1-2</string>
+        <string>avionicsNoseCone</string>
+        <string>crewCabin</string>
+        <string>cupola</string>
+        <string>landerCabinSmall</string>
+        <string>mark3Cockpit</string>
+        <string>mk1pod</string>
+        <string>mk2LanderCabin</string>
+        <string>probeCoreCube</string>
+        <string>probeCoreHex</string>
+        <string>probeCoreOcto</string>
+        <string>probeCoreOcto2</string>
+        <string>probeCoreSphere</string>
+        <string>probeStackLarge</string>
+        <string>probeStackSmall</string>
+        <string>sasModule</string>
+        <string>seatExternalCmd</string>
+        <string>rtg</string>
+        <string>batteryBank</string>
+        <string>batteryBankLarge</string>
+        <string>batteryBankMini</string>
+        <string>batteryPack</string>
+        <string>ksp.r.largeBatteryPack</string>
+        <string>largeSolarPanel</string>
+        <string>solarPanels1</string>
+        <string>solarPanels2</string>
+        <string>solarPanels3</string>
+        <string>solarPanels4</string>
+        <string>solarPanels5</string>
+        <string>JetEngine</string>
+        <string>engineLargeSkipper</string>
+        <string>ionEngine</string>
+        <string>liquidEngine</string>
+        <string>liquidEngine1-2</string>
+        <string>liquidEngine2</string>
+        <string>liquidEngine2-2</string>
+        <string>liquidEngine3</string>
+        <string>liquidEngineMini</string>
+        <string>microEngine</string>
+        <string>nuclearEngine</string>
+        <string>radialEngineMini</string>
+        <string>radialLiquidEngine1-2</string>
+        <string>sepMotor1</string>
+        <string>smallRadialEngine</string>
+        <string>solidBooster</string>
+        <string>solidBooster1-1</string>
+        <string>toroidalAerospike</string>
+        <string>turboFanEngine</string>
+        <string>MK1Fuselage</string>
+        <string>Mk1FuselageStructural</string>
+        <string>RCSFuelTank</string>
+        <string>RCSTank1-2</string>
+        <string>rcsTankMini</string>
+        <string>rcsTankRadialLong</string>
+        <string>fuelTank</string>
+        <string>fuelTank1-2</string>
+        <string>fuelTank2-2</string>
+        <string>fuelTank3-2</string>
+        <string>fuelTank4-2</string>
+        <string>fuelTankSmall</string>
+        <string>fuelTankSmallFlat</string>
+        <string>miniFuelTank</string>
+        <string>mk2Fuselage</string>
+        <string>mk2SpacePlaneAdapter</string>
+        <string>mk3Fuselage</string>
+        <string>mk3spacePlaneAdapter</string>
+        <string>radialRCSTank</string>
+        <string>toroidalFuelTank</string>
+        <string>xenonTank</string>
+        <string>xenonTankRadial</string>
+        <string>adapterLargeSmallBi</string>
+        <string>adapterLargeSmallQuad</string>
+        <string>adapterLargeSmallTri</string>
+        <string>adapterSmallMiniShort</string>
+        <string>adapterSmallMiniTall</string>
+        <string>nacelleBody</string>
+        <string>radialEngineBody</string>
+        <string>smallHardpoint</string>
+        <string>stationHub</string>
+        <string>structuralIBeam1</string>
+        <string>structuralIBeam2</string>
+        <string>structuralIBeam3</string>
+        <string>structuralMiniNode</string>
+        <string>structuralPanel1</string>
+        <string>structuralPanel2</string>
+        <string>structuralPylon</string>
+        <string>structuralWing</string>
+        <string>strutConnector</string>
+        <string>strutCube</string>
+        <string>strutOcto</string>
+        <string>trussAdapter</string>
+        <string>trussPiece1x</string>
+        <string>trussPiece3x</string>
+        <string>CircularIntake</string>
+        <string>landingLeg1</string>
+        <string>landingLeg1-2</string>
+        <string>RCSBlock</string>
+        <string>stackDecoupler</string>
+        <string>airScoop</string>
+        <string>commDish</string>
+        <string>decoupler1-2</string>
+        <string>dockingPort1</string>
+        <string>dockingPort2</string>
+        <string>dockingPort3</string>
+        <string>dockingPortLarge</string>
+        <string>dockingPortLateral</string>
+        <string>fuelLine</string>
+        <string>ladder1</string>
+        <string>largeAdapter</string>
+        <string>largeAdapter2</string>
+        <string>launchClamp1</string>
+        <string>linearRcs</string>
+        <string>longAntenna</string>
+        <string>miniLandingLeg</string>
+        <string>parachuteDrogue</string>
+        <string>parachuteLarge</string>
+        <string>parachuteRadial</string>
+        <string>parachuteSingle</string>
+        <string>radialDecoupler</string>
+        <string>radialDecoupler1-2</string>
+        <string>radialDecoupler2</string>
+        <string>ramAirIntake</string>
+        <string>roverBody</string>
+        <string>sensorAccelerometer</string>
+        <string>sensorBarometer</string>
+        <string>sensorGravimeter</string>
+        <string>sensorThermometer</string>
+        <string>spotLight1</string>
+        <string>spotLight2</string>
+        <string>stackBiCoupler</string>
+        <string>stackDecouplerMini</string>
+        <string>stackPoint1</string>
+        <string>stackQuadCoupler</string>
+        <string>stackSeparator</string>
+        <string>stackSeparatorBig</string>
+        <string>stackSeparatorMini</string>
+        <string>stackTriCoupler</string>
+        <string>telescopicLadder</string>
+        <string>telescopicLadderBay</string>
+        <string>SmallGearBay</string>
+        <string>roverWheel1</string>
+        <string>roverWheel2</string>
+        <string>roverWheel3</string>
+        <string>wheelMed</string>
+        <string>flag</string>
+        <string>kerbalEVA</string>
+        <string>mediumDishAntenna</string>
+        <string>GooExperiment</string>
+        <string>science.module</string>
+        <string>RAPIER</string>
+        <string>Large.Crewed.Lab</string>
+        <string>GrapplingDevice</string>
+        <string>LaunchEscapeSystem</string>
+        <string>MassiveBooster</string>
+        <string>PotatoRoid</string>
+        <string>Size2LFB</string>
+        <string>Size3AdvancedEngine</string>
+        <string>size3Decoupler</string>
+        <string>Size3EngineCluster</string>
+        <string>Size3LargeTank</string>
+        <string>Size3MediumTank</string>
+        <string>Size3SmallTank</string>
+        <string>Size3to2Adapter</string>
+        <string>omsEngine</string>
+        <string>vernierEngine</string>
+        <string>delta.small</string>
+        <string>elevon2</string>
+        <string>elevon3</string>
+        <string>elevon5</string>
+        <string>IntakeRadialLong</string>
+        <string>MK1IntakeFuselage</string>
+        <string>mk2.1m.AdapterLong</string>
+        <string>mk2.1m.Bicoupler</string>
+        <string>mk2CargoBayL</string>
+        <string>mk2CargoBayS</string>
+        <string>mk2Cockpit.Inline</string>
+        <string>mk2Cockpit.Standard</string>
+        <string>mk2CrewCabin</string>
+        <string>mk2DockingPort</string>
+        <string>mk2DroneCore</string>
+        <string>mk2FuselageLongLFO</string>
+        <string>mk2FuselageShortLFO</string>
+        <string>mk2FuselageShortLiquid</string>
+        <string>mk2FuselageShortMono</string>
+        <string>shockConeIntake</string>
+        <string>structuralWing2</string>
+        <string>structuralWing3</string>
+        <string>structuralWing4</string>
+        <string>sweptWing1</string>
+        <string>sweptWing2</string>
+        <string>wingConnector2</string>
+        <string>wingConnector3</string>
+        <string>wingConnector4</string>
+        <string>wingConnector5</string>
+        <string>wingStrake</string>
+        <string>adapterMk3-Mk2</string>
+        <string>adapterMk3-Size2</string>
+        <string>adapterMk3-Size2Slant</string>
+        <string>adapterSize2-Mk2</string>
+        <string>adapterSize2-Size1</string>
+        <string>adapterSize2-Size1Slant</string>
+        <string>adapterSize3-Mk3</string>
+        <string>mk3CargoBayL</string>
+        <string>mk3CargoBayM</string>
+        <string>mk3CargoBayS</string>
+        <string>mk3Cockpit.Shuttle</string>
+        <string>mk3CrewCabin</string>
+        <string>mk3FuselageLF.100</string>
+        <string>mk3FuselageLF.25</string>
+        <string>mk3FuselageLF.50</string>
+        <string>mk3FuselageLFO.100</string>
+        <string>mk3FuselageLFO.25</string>
+        <string>mk3FuselageLFO.50</string>
+        <string>mk3FuselageMONO</string>
+        <string>kerbalEVAfemale</string>
+        <string>airbrake1</string>
+        <string>airlinerCtrlSrf</string>
+        <string>airlinerMainWing</string>
+        <string>airlinerTailFin</string>
+        <string>pointyNoseConeA</string>
+        <string>pointyNoseConeB</string>
+        <string>airplaneTailB</string>
+        <string>fairingSize1</string>
+        <string>fairingSize2</string>
+        <string>fairingSize3</string>
+        <string>HeatShield1</string>
+        <string>HeatShield2</string>
+        <string>HeatShield3</string>
+        <string>wingShuttleDelta</string>
+        <string>elevonMk3</string>
+        <string>wingShuttleElevon1</string>
+        <string>wingShuttleElevon2</string>
+        <string>wingShuttleRudder</string>
+        <string>wingShuttleStrake</string>
+        <string>delta.small</string>
+        <string>mk2Cockpit.Inline</string>
+        <string>mk2Cockpit.Standard</string>
+        <string>mk3Cockpit.Shuttle</string>
+        <string>ksp.r.largeBatteryPack</string>
+        <string>solidBooster.sm</string>
+        <string>fuelTank.long</string>
+        <string>mk2.1m.Bicoupler</string>
+        <string>mk2.1m.AdapterLong</string>
+        <string>mk3FuselageLFO.100</string>
+        <string>mk3FuselageLFO.25</string>
+        <string>mk3FuselageLFO.50</string>
+        <string>mk3FuselageLF.100</string>
+        <string>mk3FuselageLF.25</string>
+        <string>mk3FuselageLF.50</string>
+        <string>xenonTankLarge</string>
+        <string>mk3Cockpit.Shuttle</string>
+        <string>FuelCell</string>
+        <string>FuelCellArray</string>
+        <string>ISRU</string>
+        <string>LargeTank</string>
+        <string>OrbitalScanner</string>
+        <string>RadialDrill</string>
+        <string>SmallTank</string>
+        <string>SurfaceScanner</string>
+        <string>SurveyScanner</string>
+        <string>sensorAtmosphere</string>
+        <string>Large.Crewed.Lab</string>
+        <string>science.module</string>
+        <string>radialDrogue</string>
+        <string>ServiceBay.125</string>
+        <string>ServiceBay.250</string>
+        <string>GearFixed</string>
+        <string>GearFree</string>
+        <string>GearLarge</string>
+        <string>GearMedium</string>
+        <string>basicFin</string>
+        <string>foldingRadLarge</string>
+        <string>foldingRadMed</string>
+        <string>foldingRadSmall</string>
+        <string>radPanelLg</string>
+        <string>radPanelSm</string>
+        <string>turboJet</string>
+        <string>turboFanSize2</string>
+        <string>miniJetEngine</string>
+        <string>SSME</string>
+        <string>adapterEngines</string>
+        <string>miniFuselage</string>
+        <string>miniIntake</string>
+        <string>MK1CrewCabin</string>
+        <string>MiniISRU</string>
+        <string>MiniDrill</string>
+        <string>RadialOreTank</string>
+        <string>radPanelEdge</string>
+        <string>mk3CargoRamp</string>
+        <string>InflatableHeatShield</string>
+        <string>HECS2.ProbeCore</string>
+        <string>HighGainAntenna</string>
+        <string>LgRadialSolarPanel</string>
+        <string>GearSmall</string>
+        <string>ScienceBox</string>
+        <string>SurfAntenna</string>
+        <string>HighGainAntenna5</string>
+        <string>RelayAntenna100</string>
+        <string>RelayAntenna5</string>
+        <string>RelayAntenna50</string>
+        <string>HeatShield0</string>
+        <string>InfraredTelescope</string>
+        <string>kerbalEVAVintage</string>
+        <string>kerbalEVAfemaleVintage</string>
+        <string>mk1-3pod</string>
+        <string>Decoupler_0</string>
+        <string>Decoupler_1</string>
+        <string>Decoupler_2</string>
+        <string>Decoupler_3</string>
+        <string>Separator_0</string>
+        <string>Separator_1</string>
+        <string>Separator_2</string>
+        <string>Separator_3</string>
+        <string>externalTankCapsule</string>
+        <string>externalTankRound</string>
+        <string>externalTankToroid</string>
+        <string>Rockomax16_BW</string>
+        <string>Rockomax32_BW</string>
+        <string>Rockomax64_BW</string>
+        <string>Rockomax8BW</string>
+        <string>Decoupler.0</string>
+        <string>Decoupler.1</string>
+        <string>Decoupler.2</string>
+        <string>Decoupler.3</string>
+        <string>Separator.0</string>
+        <string>Separator.1</string>
+        <string>Separator.2</string>
+        <string>Separator.3</string>
+        <string>Rockomax16.BW</string>
+        <string>Rockomax32.BW</string>
+        <string>Rockomax64.BW</string>
+        <string>Decoupler.1p5</string>
+        <string>Decoupler.4</string>
+        <string>EnginePlate1p5</string>
+        <string>EnginePlate2</string>
+        <string>EnginePlate3</string>
+        <string>EnginePlate4</string>
+        <string>InflatableAirlock</string>
+        <string>Separator.1p5</string>
+        <string>Separator.4</string>
+        <string>Size1p5.Strut.Decoupler</string>
+        <string>LiquidEngineKE-1</string>
+        <string>LiquidEngineLV-T91</string>
+        <string>LiquidEngineLV-TX87</string>
+        <string>LiquidEngineRE-I2</string>
+        <string>LiquidEngineRE-J10</string>
+        <string>LiquidEngineRK-7</string>
+        <string>LiquidEngineRV-1</string>
+        <string>monopropMiniSphere</string>
+        <string>Size1p5.Monoprop</string>
+        <string>Size1p5.Size0.Adapter.01</string>
+        <string>Size1p5.Size1.Adapter.01</string>
+        <string>Size1p5.Size1.Adapter.02</string>
+        <string>Size1p5.Size2.Adapter.01</string>
+        <string>Size1p5.Tank.01</string>
+        <string>Size1p5.Tank.02</string>
+        <string>Size1p5.Tank.03</string>
+        <string>Size1p5.Tank.04</string>
+        <string>Size1p5.Tank.05</string>
+        <string>Size3.Size4.Adapter.01</string>
+        <string>Size4.EngineAdapter.01</string>
+        <string>Size4.Tank.01</string>
+        <string>Size4.Tank.02</string>
+        <string>Size4.Tank.03</string>
+        <string>Size4.Tank.04</string>
+        <string>roverWheelM1-F</string>
+        <string>fairingSize1p5</string>
+        <string>fairingSize4</string>
+        <string>Size1to0ServiceModule</string>
+        <string>ServiceModule18</string>
+        <string>ServiceModule25</string>
+        <string>kv1Pod</string>
+        <string>kv2Pod</string>
+        <string>kv3Pod</string>
+        <string>Mk2Pod</string>
+        <string>MEMLander</string>
+        <string>EquiTriangle0</string>
+        <string>EquiTriangle1</string>
+        <string>EquiTriangle1p5</string>
+        <string>EquiTriangle2</string>
+        <string>Panel0</string>
+        <string>Panel1</string>
+        <string>Panel1p5</string>
+        <string>Panel2</string>
+        <string>Triangle0</string>
+        <string>Triangle1</string>
+        <string>Triangle1p5</string>
+        <string>Triangle2</string>
+        <string>Tube1</string>
+        <string>Tube1p5</string>
+        <string>Tube2</string>
+        <string>Tube3</string>
+        <string>Tube4</string>
+        <string>HeatShield1p5</string>
+        <string>mk1pod.v2</string>
+        <string>probeCoreHex.v2</string>
+        <string>probeCoreOcto2.v2</string>
+        <string>probeCoreOcto.v2</string>
+        <string>roverBody.v2</string>
+        <string>probeCoreSphere.v2</string>
+        <string>solidBooster.v2</string>
+        <string>solidBooster.sm.v2</string>
+        <string>rocketNoseCone.v2</string>
+        <string>mk2LanderCabin.v2</string>
+        <string>liquidEngineMini.v2</string>
+        <string>liquidEngine3.v2</string>
+        <string>liquidEngine2-2.v2</string>
+        <string>Size3To2Adapter.v2</string>
+        <string>stackBiCoupler.v2</string>
+        <string>stackTriCoupler.v2</string>
+        <string>rocketNoseConeSize3</string>
+        <string>smallRadialEngine.v2</string>
+        <string>radialEngineMini.v2</string>
+        <string>microEngine.v2</string>
+        <string>RCSBlock.v2</string>
+        <string>kerbalEVAFuture</string>
+        <string>kerbalEVAfemaleFuture</string>
+        <string>rocketNoseConeSize4</string>
+        <string>cargoContainer</string>
+        <string>smallCargoContainer</string>
+        <string>DeployedCentralStation</string>
+        <string>DeployedGoExOb</string>
+        <string>DeployedIONExp</string>
+        <string>DeployedRTG</string>
+        <string>DeployedSatDish</string>
+        <string>DeployedSeismicSensor</string>
+        <string>DeployedSolarPanel</string>
+        <string>DeployedWeatherStn</string>
+        <string>hinge.01</string>
+        <string>hinge.01.s</string>
+        <string>hinge.03</string>
+        <string>hinge.03.s</string>
+        <string>hinge.04</string>
+        <string>piston.01</string>
+        <string>piston.02</string>
+        <string>piston.03</string>
+        <string>piston.04</string>
+        <string>rotor.01</string>
+        <string>rotor.02</string>
+        <string>rotor.03</string>
+        <string>rotoServo.00</string>
+        <string>rotoServo.02</string>
+        <string>rotoServo.03</string>
+        <string>rotoServo.04</string>
+        <string>controller1000</string>
+        <string>RobotArmScanner.S1</string>
+        <string>RobotArmScanner.S2</string>
+        <string>RobotArmScanner.S3</string>
+        <string>noseconeTiny</string>
+        <string>noseconeVS</string>
+        <string>largeHeliBlade</string>
+        <string>largePropeller</string>
+        <string>mediumHeliBlade</string>
+        <string>mediumPropeller</string>
+        <string>smallHeliBlade</string>
+        <string>smallPropeller</string>
+        <string>RotorEngine.02</string>
+        <string>RotorEngine.03</string>
+        <string>rotor.01s</string>
+        <string>rotor.02s</string>
+        <string>rotor.03s</string>
+        <string>lGripPad</string>
+        <string>lGripStrip</string>
+        <string>mGripPad</string>
+        <string>sGripPad</string>
+        <string>sGripStrip</string>
+        <string>Thoroughbred</string>
+        <string>Clydesdale</string>
+        <string>Shrimp</string>
+        <string>Mite</string>
+        <string>ServiceBay.125.v2</string>
+        <string>ServiceBay.250.v2</string>
+        <string>liquidEngineMainsail.v2</string>
+        <string>engineLargeSkipper.v2</string>
+        <string>ReleaseValve</string>
+        <string>Size.1.5.Cone</string>
+        <string>Pollux</string>
+        <string>FanShroud.01</string>
+        <string>FanShroud.02</string>
+        <string>FanShroud.03</string>
+        <string>largeFanBlade</string>
+        <string>mediumFanBlade</string>
+        <string>smallFanBlade</string>
+        <string>Magnetometer</string>
+        <string>MpoProbe</string>
+        <string>MtmStage</string>
+        <string>PotatoComet</string>
+        <string>flagPartFlat</string>
+        <string>flagPartSize0</string>
+        <string>flagPartSize1</string>
+        <string>flagPartSize2</string>
+        <string>flagPartSize3</string>
+        <string>smallClaw</string>
+        <string>evaCylinder</string>
+        <string>evaJetpack</string>
+        <string>evaChute</string>
+        <string>evaRepairKit</string>
+        <string>evaScienceKit</string>
+        <string>CargoStorageUnit</string>
+        <string>ConformalStorageUnit</string>
+        <string>Size2LFB.v2</string>
+        <string>HighGainAntenna5.v2</string>
+        <string>domeLight1</string>
+        <string>groundLight1</string>
+        <string>groundLight2</string>
+        <string>navLight1</string>
+        <string>spotLight3</string>
+        <string>stripLight1</string>
+        <string>RCSblock.01.small</string>
+        <string>RCSLinearSmall</string>
+        <string>flagPartSize1p5</string>
+        <string>flagPartSize4</string>
+        <string>kerbalEVASlimSuit</string>
+        <string>kerbalEVASlimSuitFemale</string>
+        <string>rocketNoseCone.v3</string>
+        <string>solarPanelOX10C</string>
+        <string>solarPanelSP10C</string>
+        <string>solarPanelOX10L</string>
+        <string>solarPanelSP10L</string>
+        <string>fireworksLauncherBig</string>
+        <string>fireworksLauncherSmall</string>
+        <string>spotLight1.v2</string>
+        <string>spotLight2.v2</string>
+        <string>EnginePlate5</string>
+        <string>groundAnchor</string>
+        <string>liquidEngine.v2</string>
+        <string>liquidEngine2.v2</string>
+      </AllowedParts>
+      <AllowedResources>
+        <string>LiquidFuel</string>
+        <string>Oxidizer</string>
+        <string>SolidFuel</string>
+        <string>MonoPropellant</string>
+        <string>XenonGas</string>
+        <string>ElectricCharge</string>
+        <string>IntakeAir</string>
+        <string>EVA Propellant</string>
+        <string>Ore</string>
+        <string>Ablator</string>
+      </AllowedResources>
+    </ModControlStructure>
+  LogSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <LogSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Minimum log level. Values: Normal, Debug, NetworkDebug, VerboseNetworkDebug-->
+      <LogLevel>Debug</LogLevel>
+      <!--Specify the amount of days a log file should be considered as expired and deleted. 0 = Disabled-->
+      <ExpireLogs>14</ExpireLogs>
+      <!--Use UTC instead of system time in the log.-->
+      <UseUtcTimeInLog>false</UseUtcTimeInLog>
+    </LogSettingsDefinition>
+  MasterServerSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <MasterServerSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Set to false if you don't want to appear on the server list-->
+      <RegisterWithMasterServer>true</RegisterWithMasterServer>
+      <!--Specify in miliseconds how often we will update the info with masterserver. Min value = 5000-->
+      <MasterServerRegistrationMsInterval>5000</MasterServerRegistrationMsInterval>
+    </MasterServerSettingsDefinition>
+  ScreenshotSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <ScreenshotSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Minimum interval between screenshots in milliseconds-->
+      <MinScreenshotIntervalMs>30000</MinScreenshotIntervalMs>
+      <!--Max screenshot width in pixels-->
+      <MaxScreenshotWidth>1920</MaxScreenshotWidth>
+      <!--Max screenshot height in pixels-->
+      <MaxScreenshotHeight>1080</MaxScreenshotHeight>
+      <!--Maximum screenshots kept per user-->
+      <MaxScreenshotsPerUser>30</MaxScreenshotsPerUser>
+      <!--Maximum screenshots folders kept-->
+      <MaxScreenshotsFolders>50</MaxScreenshotsFolders>
+    </ScreenshotSettingsDefinition>
+  WarpSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <WarpSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Specify the warp Type. Values: None, Subspace-->
+      <WarpMode>Subspace</WarpMode>
+    </WarpSettingsDefinition>
+  WebsiteSettings.xml: >
+    <?xml version="1.0" encoding="utf-16"?>
+    <WebsiteSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+      <!--Enable the website system that allows to retrieve server information in JSON format. You can get the data at http://YourIP:Port-->
+      <EnableWebsite>true</EnableWebsite>
+      <!--The address that the web server listens on. Falls back to ConnectionSettings.ListenAddress if unset, which defaults to [::]-->
+      <ListenAddress></ListenAddress>
+      <!--TCP port. You will need to open this port on your router if you want to display the data from outside your local network-->
+      <Port>8900</Port>
+      <!--Interval for refreshing the information of players and vessels-->
+      <RefreshIntervalMs>5000</RefreshIntervalMs>
+    </WebsiteSettingsDefinition>
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+image:
+  repository: ghcr.io/lunamultiplayer/lunamultiplayer/server
+  # This sets the pull policy for images.
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "master"
+
+# This is for the secrets for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
+imagePullSecrets: []
+# This is to override the chart name.
+nameOverride: ""
+fullnameOverride: ""
+
+# This is for setting Kubernetes Annotations to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+podAnnotations: {}
+# This is for setting Kubernetes Labels to a Pod.
+# For more information checkout: https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

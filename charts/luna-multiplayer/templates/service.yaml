@@ -1,0 +1,58 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "luna-multiplayer.fullname" . }}-game
+  labels:
+    {{- include "luna-multiplayer.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.gameService.type }}
+  ports:
+    - name: game
+      port: {{ .Values.gameService.port }}
+      targetPort: {{ .Values.gameService.port }}
+      protocol: UDP
+  selector:
+    {{- include "luna-multiplayer.selectorLabels" . | nindent 4 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "luna-multiplayer.fullname" . }}-web
+  labels:
+    {{- include "luna-multiplayer.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.webService.type }}
+  ports:
+    - name: web
+      port: {{ .Values.webService.port }}
+      targetPort: {{ .Values.webService.port }}
+      protocol: TCP
+  selector:
+    {{- include "luna-multiplayer.selectorLabels" . | nindent 4 }}
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "luna-multiplayer.fullname" . }}
+  labels:
+    {{- include "luna-multiplayer.labels" . | nindent 4 }}
+  annotations:
+    {{- with .Values.webService.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  rules:
+    - host: {{ .Values.webService.ingress.hostname }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ include "luna-multiplayer.fullname" . }}
+                port:
+                  name: web
+  tls:
+    {{- with .Values.webService.ingress.tls }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}

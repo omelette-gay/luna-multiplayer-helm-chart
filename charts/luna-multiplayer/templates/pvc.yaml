@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: '{{ include "luna-multiplayer.fullname" . }}-universe'
+  labels:
+    {{- include "luna-multiplayer.labels" . | nindent 4 }}
+    {{- if .Values.storage.universe.pvcLabels }}
+    {{- toYaml .Values.storage.universe.pvcLabels | nindent 4 }}
+    {{- end }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.storage.universe.request }}"
+  {{- if .Values.storage.universe.className }}
+  storageClassName: "{{ .Values.storage.universe.className }}"
+  {{- end }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: '{{ include "luna-multiplayer.fullname" . }}-plugins'
+  labels:
+    {{- include "luna-multiplayer.labels" . | nindent 4 }}
+    {{- if .Values.storage.plugins.pvcLabels }}
+    {{- toYaml .Values.storage.plugins.pvcLabels | nindent 4 }}
+    {{- end }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: "{{ .Values.storage.plugins.request }}"
+  {{- if .Values.storage.plugins.className }}
+  storageClassName: "{{ .Values.storage.plugins.className }}"
+  {{- end }}
