@@ -44,8 +44,19 @@ spec:
               protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      initContainers:
+        - name: copy-config
+          image: busybox:latest
+          command: [ 'sh', '-c', 'cp /config/* /LMPServer/Config' ]
+          volumeMounts:
+            - name: external-config
+              mountPath: /config/
+            - name: config
+              mountPath: /LMPServer/Config
       volumes:
         - name: config
+          emptyDir: {}
+        - name: external-config
           {{- if .Values.storage.mergeConfigFromExternalSecret }}
           secret:
             secretName: {{ include "luna-multiplayer.fullname" . }}-config

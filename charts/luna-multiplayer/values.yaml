@@ -80,7 +80,7 @@ config:
       <Green>0</Green>
       <!--If UseRainbowEffect is false use RedGreenBlue fields to specify server color (Valid values are from 0 to 255)-->
       <Blue>0</Blue>
-    </DedicatedServerSettingsDefinition
+    </DedicatedServerSettingsDefinition>
   GameplaySettings.xml: >
     <?xml version="1.0" encoding="utf-16"?>
     <GameplaySettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
@@ -162,7 +162,7 @@ config:
       <ExtraGroundstations>true</ExtraGroundstations>
       <!--Enable full SAS in Sandbox-->
       <EnableFullSASInSandbox>false</EnableFullSASInSandbox>
-    </GameplaySettingsDefinition
+    </GameplaySettingsDefinition>
   GeneralSettings.xml: >
     <?xml version="1.0" encoding="utf-16"?>
     <GeneralSettingsDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
