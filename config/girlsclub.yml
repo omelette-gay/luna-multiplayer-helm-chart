@@ -60,7 +60,7 @@ config:
       <!--Specify the gameplay difficulty of the server. Values: Easy, Normal, Moderate, Hard, Custom-->
       <GameDifficulty>Normal</GameDifficulty>
       <!--Specify the game Type. Values: Sandbox, Career, Science-->
-      <GameMode>Sandbox</GameMode>
+      <GameMode>Career</GameMode>
       <!--Enable mod control. WARNING:
         Only consider turning off mod control for private servers. The game will constantly complain about missing parts if there are missing mods. Read this wiki page: https://github.com/LunaMultiplayer/LunaMultiplayer/wiki/Mod-file to understand how it works-->
       <ModControl>true</ModControl>
