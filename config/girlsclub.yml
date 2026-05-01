@@ -73,5 +73,5 @@ config:
       <!--Specify the minimum distance in which vessels can interact with eachother at the launch pad and runway-->
       <SafetyBubbleDistance>100</SafetyBubbleDistance>
       <!--Max number of parts that a vessel can have when spawning-->
-      <MaxVesselParts>200</MaxVesselParts>
+      <MaxVesselParts>500</MaxVesselParts>
     </GeneralSettingsDefinition>
