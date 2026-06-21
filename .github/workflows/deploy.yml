@@ -17,7 +17,7 @@ jobs:
         config:
           - girlsclub
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: log in to k8s
         id: k8s_auth
