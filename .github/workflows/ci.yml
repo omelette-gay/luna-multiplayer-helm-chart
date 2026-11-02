@@ -1,0 +1,25 @@
+name: ci
+
+on:
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint and render chart
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: azure/setup-helm@v4
+
+      - name: lint (defaults)
+        run: helm lint ./charts/luna-multiplayer
+
+      - name: lint (all optional features)
+        run: helm lint ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/external-secret-values.yaml
+
+      - name: render (defaults)
+        run: helm template test ./charts/luna-multiplayer > /dev/null
+
+      - name: render (all optional features)
+        run: helm template test ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/external-secret-values.yaml > /dev/null

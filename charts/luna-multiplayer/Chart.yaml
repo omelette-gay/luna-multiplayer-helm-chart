@@ -1,6 +1,10 @@
 apiVersion: v2
 name: luna-multiplayer
-description: Chris's weight tracker
+description: Luna Multiplayer Server, the multiplayer mod server for Kerbal Space Program
 type: application
-version: 0.1.0
+version: 1.0.0
 appVersion: "0.1.0"
+home: https://github.com/omelette-gay/luna-multiplayer-helm-chart
+sources:
+  - https://github.com/omelette-gay/luna-multiplayer-helm-chart
+  - https://github.com/LunaMultiplayer/LunaMultiplayer
