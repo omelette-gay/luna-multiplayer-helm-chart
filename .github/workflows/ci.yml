@@ -16,7 +16,7 @@ jobs:
         run: helm lint ./charts/luna-multiplayer
 
       - name: lint (all optional features)
-        run: helm lint ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/external-secret-values.yaml
+        run: helm lint ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/all-values.yaml
 
       - name: lint (ingress disabled)
         run: helm lint ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/no-ingress-values.yaml
@@ -25,13 +25,18 @@ jobs:
         run: helm template test ./charts/luna-multiplayer > /dev/null
 
       - name: render (all optional features)
-        run: helm template test ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/external-secret-values.yaml > /dev/null
+        run: helm template test ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/all-values.yaml > /dev/null
 
       - name: check the ingress points at a rendered Service
         run: helm template test ./charts/luna-multiplayer | python3 scripts/check-ingress-backend.py
 
       - name: check the ingress points at a rendered Service (all optional features)
-        run: helm template test ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/external-secret-values.yaml | python3 scripts/check-ingress-backend.py
+        run: helm template test ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/all-values.yaml | python3 scripts/check-ingress-backend.py
 
       - name: check no ingress is rendered when it is disabled
         run: helm template test ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/no-ingress-values.yaml | python3 scripts/check-ingress-backend.py --expect-no-ingress
+
+      - name: check the config Secret is only mounted when it is set
+        run: |
+          helm template test ./charts/luna-multiplayer | grep -q 'secretName: example-config-secret' && exit 1
+          helm template test ./charts/luna-multiplayer -f ./charts/luna-multiplayer/ci/all-values.yaml | grep -q 'secretName: example-config-secret'

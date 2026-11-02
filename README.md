@@ -42,13 +42,11 @@ Always pin `version`.
 See [`values.yaml`](charts/luna-multiplayer/values.yaml) for everything that
 can be set. The server's XML config files are supplied under `config:`.
 
-To keep secrets (e.g. the server password) out of values, set
-`storage.mergeConfigFromExternalSecret`. The chart then creates an
-[External Secrets](https://external-secrets.io) `ExternalSecret` that renders
-the `config` files as templates (e.g. `{{ .server_password }}`) against keys
-read from the named `SecretStore`, which must already exist in the namespace.
-See [`ci/external-secret-values.yaml`](charts/luna-multiplayer/ci/external-secret-values.yaml)
-for an example.
+To keep secrets (e.g. the server password) out of values, create a Secret yourself and set `existingConfigSecret` to its
+name. When the server starts, each file in the Secret is copied over the config file of the same name from `config`, so
+the Secret only needs the files that contain secrets (e.g. a `GeneralSettings.xml` with the password in it). How the
+Secret is made is up to you: the chart doesn't know or care, so it works with External Secrets, Sealed Secrets, SOPS or
+a plain `kubectl create secret`. The Secret is read when the pod starts, so restart the pod after changing it.
 
 The server's web server (port 8900) doesn't serve a web page. It returns the server's current status (players, vessels
 and so on) as JSON, for status displays and other tools. The chart exposes it through an Ingress by default. Set
@@ -63,3 +61,10 @@ so uninstalling the release will not delete your game data.
 2. Open a PR; CI lints and renders the chart.
 3. Merge to `main`. The `release` workflow packages the chart, creates a GitHub
    Release and updates the Helm repo index on the `gh-pages` branch.
+
+## Upgrading from 1.x
+
+2.0.0 removes `storage.mergeConfigFromExternalSecret` and the `ExternalSecret` the chart used to create. Create the
+Secret yourself, with the files that contain secrets already rendered, make sure it exists, and set `existingConfigSecret`
+to its name before you upgrade. The chart used to put every config file into a Secret named
+`<release>-luna-multiplayer-config`. It no longer creates or reads that one, so use a different name for yours.
