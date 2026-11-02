@@ -20,6 +20,8 @@ webService:
   type: ClusterIP
   port: 8900
   ingress:
+    # Expose the web server (which serves the server's status as JSON) through an Ingress
+    enabled: true
     hostname: luna-multiplayer.local
     annotations: {}
     tls: []
