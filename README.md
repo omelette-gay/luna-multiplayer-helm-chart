@@ -59,8 +59,3 @@ so uninstalling the release will not delete your game data.
 2. Open a PR; CI lints and renders the chart.
 3. Merge to `main`. The `release` workflow packages the chart, creates a GitHub
    Release and updates the Helm repo index on the `gh-pages` branch.
-
-### One-time setup
-
-After the first release run creates the `gh-pages` branch, enable GitHub Pages
-in the repo settings with source **Deploy from a branch** → `gh-pages` / `(root)`.
