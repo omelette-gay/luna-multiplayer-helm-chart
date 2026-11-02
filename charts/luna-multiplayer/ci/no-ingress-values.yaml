@@ -1,0 +1,4 @@
+# Used by CI to render the chart with the web ingress turned off.
+webService:
+  ingress:
+    enabled: false

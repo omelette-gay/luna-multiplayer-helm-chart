@@ -50,6 +50,10 @@ read from the named `SecretStore`, which must already exist in the namespace.
 See [`ci/external-secret-values.yaml`](charts/luna-multiplayer/ci/external-secret-values.yaml)
 for an example.
 
+The server's web server (port 8900) doesn't serve a web page. It returns the server's current status (players, vessels
+and so on) as JSON, for status displays and other tools. The chart exposes it through an Ingress by default. Set
+`webService.ingress.enabled: false` if you don't want it reachable.
+
 The universe and plugin PVCs are annotated with `helm.sh/resource-policy: keep`,
 so uninstalling the release will not delete your game data.
 
