@@ -26,6 +26,11 @@ webService:
     annotations: {}
     tls: []
 
+# The name of an existing Secret in the namespace whose files are copied over the config files below when the server
+# starts, e.g. to supply a GeneralSettings.xml that contains a password. Each key is the name of a config file. The chart
+# doesn't create this Secret.
+existingConfigSecret: ""
+
 config:
   ConnectionSettings.xml: >
     <?xml version="1.0" encoding="utf-16"?>

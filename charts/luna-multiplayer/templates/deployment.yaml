@@ -47,23 +47,28 @@ spec:
       initContainers:
         - name: copy-config
           image: busybox:latest
-          command: [ 'sh', '-c', 'cp /config/* /LMPServer/Config' ]
+          # Copy the chart's config files, then any files from the existing Secret over the top of them
+          command: [ 'sh', '-c', 'cp /config/* /LMPServer/Config{{ if .Values.existingConfigSecret }} && cp /config-secret/* /LMPServer/Config{{ end }}' ]
           volumeMounts:
-            - name: external-config
+            - name: chart-config
               mountPath: /config/
+            {{- if .Values.existingConfigSecret }}
+            - name: config-secret
+              mountPath: /config-secret/
+            {{- end }}
             - name: config
               mountPath: /LMPServer/Config
       volumes:
         - name: config
           emptyDir: {}
-        - name: external-config
-          {{- if .Values.storage.mergeConfigFromExternalSecret }}
-          secret:
-            secretName: {{ include "luna-multiplayer.fullname" . }}-config
-          {{- else }}
+        - name: chart-config
           configMap:
             name: {{ include "luna-multiplayer.fullname" . }}-config
-          {{- end }}
+        {{- if .Values.existingConfigSecret }}
+        - name: config-secret
+          secret:
+            secretName: {{ .Values.existingConfigSecret }}
+        {{- end }}
         - name: universe
           persistentVolumeClaim:
             claimName: {{ include "luna-multiplayer.fullname" . }}-universe
