@@ -1,0 +1,19 @@
+apiVersion: v1
+entries:
+  luna-multiplayer:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2026-11-02T22:22:50.823372211Z"
+    description: Luna Multiplayer Server, the multiplayer mod server for Kerbal Space
+      Program
+    digest: ca11116adb165efd007e61ab1899047886e08870609f970116599c2c7b58a06c
+    home: https://github.com/omelette-gay/luna-multiplayer-helm-chart
+    name: luna-multiplayer
+    sources:
+    - https://github.com/omelette-gay/luna-multiplayer-helm-chart
+    - https://github.com/LunaMultiplayer/LunaMultiplayer
+    type: application
+    urls:
+    - https://github.com/omelette-gay/luna-multiplayer-helm-chart/releases/download/luna-multiplayer-1.0.0/luna-multiplayer-1.0.0.tgz
+    version: 1.0.0
+generated: "2026-11-02T22:22:50.823378673Z"
