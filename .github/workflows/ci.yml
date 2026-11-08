@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - uses: azure/setup-helm@v4
+      - uses: azure/setup-helm@v5
 
       - name: lint (defaults)
         run: helm lint ./charts/luna-multiplayer
